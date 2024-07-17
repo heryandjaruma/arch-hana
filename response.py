@@ -1,5 +1,5 @@
 from enum import Enum, IntEnum
-from typing import Any
+from typing import Union
 
 from pydantic import BaseModel
 
@@ -22,8 +22,7 @@ class Code(IntEnum):
     internal_server_error = 500
 
 
-class Response(BaseModel):
+class ResponseT(BaseModel):
     code: Code
     status: Status
-    data: Any
-
+    data: Union[None | str | dict | list]
