@@ -5,7 +5,7 @@ from fastapi import FastAPI, Depends, status
 from openai import OpenAI
 
 from happy import HappyService, HappyRequest
-from jarvis_alpha import JarvisAlphaService
+from jarvis_alpha import JarvisAlphaService, JarvisAlphaRequest
 from jarvis_sigma import JarvisSigmaService
 from response import ResponseT
 
@@ -14,6 +14,7 @@ client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 happy = HappyService(client)
 jarvis_alpha = JarvisAlphaService(client)
 jarvis_sigma = JarvisSigmaService(client)
+
 
 CHAT = "/chat"
 _CHAT = "/_chat"
@@ -39,13 +40,14 @@ def happy_chat(request: HappyRequest,
 
 
 @app.post(jarvis_alpha.BASE_PATH + _CHAT, status_code=status.HTTP_200_OK)
-def jarvis_alpha_chat(jarvis_alpha_service: JarvisAlphaService = Depends(_get_jarvis_alpha_service)):
-    return jarvis_alpha_service.process(message="Hello Jarvis Alpha")
+def jarvis_alpha_chat(request: JarvisAlphaRequest,
+                      jarvis_alpha_service: JarvisAlphaService = Depends(_get_jarvis_alpha_service)):
+    return jarvis_alpha_service.chat(request)
 
 
 @app.post(jarvis_sigma.BASE_PATH + _CHAT, status_code=status.HTTP_200_OK)
-def jarvis_sigma_chat(jarvis_alpha_service: JarvisAlphaService = Depends(_get_jarvis_sigma_service)):
-    return jarvis_alpha_service.process(message="Hello Jarvis Sigma")
+def jarvis_sigma_chat(jarvis_sigma_service: JarvisSigmaService = Depends(_get_jarvis_sigma_service)):
+    return jarvis_sigma_service.chat(message="Hello Jarvis Sigma")
 
 
 @app.get("/")

@@ -24,7 +24,9 @@ class HappyRequest(BaseModel):
 
 class HappyService:
     BASE_PATH = '/happy'
+
     ASSISTANT_ID = 'asst_5vxCPEMA4IRHfo9GlTSX09oV'  # Ducker assistant 🦆
+    INSTRUCTIONS = 'Answer all questions with the word "duck" but expressively.'
 
     def __init__(self, client: OpenAI):
         self.client = client
